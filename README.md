@@ -35,22 +35,44 @@ raylib-project/
 - **ESC**: Exit game
 
 
+
 ## Building and Running
 
 ### Prerequisites
-- [raylib](https://www.raylib.com/) installed (see [raylib installation guide](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux))
-- g++ compiler
-- pkg-config
+- [raylib](https://www.raylib.com/) installed ([installation guide](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux))
+- g++ compiler (or MinGW on Windows)
+- pkg-config (Linux/macOS)
 
-### Run with Script
+### On macOS/Linux
+
+#### Run with Script
 ```bash
 ./run.sh
 ```
 
-### Manual Compilation
+#### Manual Compilation
 ```bash
 g++ main.cpp Player.cpp -o game $(pkg-config --cflags --libs raylib)
 ./game
+```
+
+### On Windows
+
+#### Prerequisites
+- [raylib Windows installation guide](https://github.com/raysan5/raylib/wiki/Working-for-Windows)
+- [MinGW-w64](http://mingw-w64.org/doku.php) or similar GCC toolchain
+
+#### Compile and Run (Command Prompt or PowerShell)
+```sh
+g++ main.cpp Player.cpp -o game.exe -I<raylib_include_path> -L<raylib_lib_path> -lraylib -lopengl32 -lgdi32 -lwinmm
+game.exe
+```
+Replace `<raylib_include_path>` and `<raylib_lib_path>` with your actual raylib include and lib directories.
+
+If you installed raylib via MSYS2, you may use `pkg-config` as on Linux:
+```sh
+g++ main.cpp Player.cpp -o game.exe $(pkg-config --cflags --libs raylib)
+game.exe
 ```
 
 
