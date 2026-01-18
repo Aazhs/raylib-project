@@ -88,8 +88,8 @@ void Player::draw_run_texture(){
     static int anim_first = 0;
     static int anim_last = 15;
     static int anim_cur = 0;
-    static float anim_speed = 0.1f; // 0.1s per frame
-    static float anim_timer = anim_speed;
+    float anim_speed = IsKeyDown(KEY_LEFT_SHIFT) ? 0.03f : 0.05f;
+    static float anim_timer = 0.05f;
     anim_timer -= deltaTime;
     if (anim_timer <= 0) {
         anim_cur++;
