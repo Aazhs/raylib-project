@@ -11,7 +11,7 @@ int main() {
     //ToggleFullscreen();
     SetTargetFPS(144);
 
-    Player player(SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+    Player player(SCREEN_WIDTH / 2, 0);
     Texture2D background = LoadTexture("image.png");
 
     while (!WindowShouldClose()) {   
