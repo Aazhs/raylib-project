@@ -1,0 +1,3 @@
+1)add friction and sliding
+3)add camera which follows
+2)add jump animation
