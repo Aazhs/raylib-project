@@ -76,11 +76,16 @@ void Player::draw_idle_texture() {
         if (anim_cur > anim_last) anim_cur = anim_first;
         anim_timer = anim_speed;
     }
-    
     float frameWidth = (float)sprite_sheet_idle.width / 10.0f;
-    Rectangle src = { frameWidth * anim_cur, 0, frameWidth, (float)sprite_sheet_idle.height };
+    Rectangle src;
+    if (facing == 1) {
+        // Facing right (normal)
+        src = { frameWidth * anim_cur, 0, frameWidth, (float)sprite_sheet_idle.height };
+    } else {
+        // Facing left (flip horizontally)
+        src = { frameWidth * (anim_cur + 1), 0, -frameWidth, (float)sprite_sheet_idle.height };
+    }
     Rectangle dest = { position.x-(float)48*4, position.y-53*(4+2), (frameWidth)*4, ((float)sprite_sheet_idle.height)*4 };
-    
     DrawTexturePro(sprite_sheet_idle, src, dest, {0,0}, 0.0f, WHITE);
 }
 
