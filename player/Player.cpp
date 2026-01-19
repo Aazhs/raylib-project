@@ -3,18 +3,15 @@
 
 Player::Player(float startX, float startY) {
     position = {startX, startY};
-    speed = 600.0f;
+    max_speed = 600.0f;
+    acceleration = 2500.0f; // Increased for snappier control
+    friction = 3200.0f;     // Higher friction for quick stop
     size = 100;
     sprite_sheet_idle = LoadTexture("player_sprites/idle.png");  // Load after window is initialized
     sprite_sheet_run = LoadTexture("player_sprites/run.png"); 
     deltaTime = GetFrameTime();
-
-    // Animation setup for 10 horizontal sprites (implemented directly)
-    int anim_first = 0;
-    int anim_last = 9;
-    int anim_cur = 0;
-    float anim_speed = 0.1f; // 0.1s per frame
-    float anim_timer = anim_speed;
+    velocityX = 0.0f;
+    velocityY = 0.0f;
 }
 
 
@@ -32,17 +29,39 @@ bool Player::is_idle(){
 void Player::movement(int screenWidth, int screenHeight) {
     deltaTime = GetFrameTime();  // Update every frame!
 
-    if(IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) speed = 1000.0f;  // Sprint speed
-    else speed = 600.0f;
-    // Horizontal movement
+    if(IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) max_speed = 1000.0f;  // Sprint speed
+    else max_speed = 600.0f;
+
+    // Horizontal movement input (acceleration)
+    bool moving = false;
     if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
-        position.x += speed * deltaTime;
+        velocityX += acceleration * deltaTime;
         facing = 1;
+        moving = true;
     }
     if(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
-        position.x -= speed * deltaTime;
+        velocityX -= acceleration * deltaTime;
         facing = -1;
+        moving = true;
     }
+
+    // Clamp velocityX to max speed
+    if (velocityX > max_speed) velocityX = max_speed;
+    if (velocityX < -max_speed) velocityX = -max_speed;
+
+    // Apply friction when not moving and on ground
+    if (!moving && onGround) {
+        if (velocityX > 0) {
+            velocityX -= friction * deltaTime;
+            if (velocityX < 0) velocityX = 0;
+        } else if (velocityX < 0) {
+            velocityX += friction * deltaTime;
+            if (velocityX > 0) velocityX = 0;
+        }
+    }
+
+    // Update position.x with velocityX
+    position.x += velocityX * deltaTime;
 
     // Jumping
     if ((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP)) && onGround) {

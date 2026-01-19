@@ -10,12 +10,15 @@ class Player {
 public:
     Player(float startX, float startY);
     Vector2 position;  // Screen coordinates
-    float speed;
+    float max_speed;
+    float acceleration;
+    float friction;
     int size;
     float deltaTime;
     Texture2D sprite_sheet_idle;
     Texture2D sprite_sheet_run;
 
+    float velocityX = 0.0f; // Horizontal velocity
     float velocityY = 0.0f;
     float gravity = 2000.0f;
     bool onGround = false;
