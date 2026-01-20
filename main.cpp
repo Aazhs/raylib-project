@@ -63,16 +63,17 @@ int main() {
                 WHITE
             );
 
-            //debug info
-            DrawFPS(10,10);
-            DrawText(TextFormat("( %.2f , %.2f )", player.position.x, player.position.y), 100, 9, 20, LIME);   // Show player position at top left
-
             //player draw
             if(idle == 1) player.draw_idle_texture();          //idle
             else player.draw_run_texture();                 //non idle
 
-            EndMode2D();
-        EndDrawing();
+        EndMode2D();
+        //debug info (world space)
+
+        DrawFPS(10, 10);
+        DrawText(TextFormat("( %.2f , %.2f )", player.position.x, player.position.y), 100, 9, 20, LIME);   // Show player position at top left
+
+    EndDrawing();
     }
 
     player.unload_texture(); //memory unloaded
